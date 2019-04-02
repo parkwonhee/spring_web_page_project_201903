@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd 
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+		<!-- context 추가 -->
+	
+	<bean id="student3" class="com.javalex.ex.Student">
+		<constructor-arg value="홍길순"></constructor-arg>
+		<constructor-arg value="30"></constructor-arg>
+		<constructor-arg >
+			<list>
+				<value>마라톤</value>
+				<value>요리</value>
+			</list>
+		</constructor-arg>
+		<property name="height" value="190" />
+		<property name="weight" value="70" />
+	</bean>
+	
+	<context:annotation-config />
+	<context:component-scan base-package="controller" />
+	
+	<bean id="student" class="com.javalex.ex2.Student">
+		<constructor-arg value="홍길순"></constructor-arg>
+		<constructor-arg value="30"></constructor-arg>
+	</bean>
+	
+	<bean id="otherStudent" class="com.javalex.ex2.OtherStudent">
+		<constructor-arg value="홍길자"></constructor-arg>
+		<constructor-arg value="50"></constructor-arg>
+	</bean>
+	<!-- 7-3강 -->
+	<bean id="student11" class="com.javalex.ex2.Student" scope="singleton">
+		<constructor-arg value="홍길순"></constructor-arg>
+		<constructor-arg value="30"></constructor-arg>
+	</bean>
+</beans>
