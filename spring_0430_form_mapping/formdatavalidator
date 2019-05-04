@@ -1,0 +1,120 @@
+
+
+-# 폼 데이터 값 검증
+
+------------------------------------------------
+
+15-1) - Validator를 이용한 검증
+
+폼에서 전달 되는 데이터를 커맨드 객체에 담아 컨트롤 객체에 전달 한다
+
+이때 커맨드 객체의 유효성 검사를 할 수 있다
+
+참고로 javascript을 이용하는 것은 클라이언트에서 검사하는 방법이고, 
+
+지금 하는 Validator 인터페이스를 이용하는 방법은 서버에 검사하는 방법 이다
+
+StudentValidator.java
+
+```
+	public class StudentValidator implements Validator{
+	@Override
+	public boolean supports(Class<?> arg0) {
+		return Student.class.isAssignableFrom(arg0);  // 검증할 객체의 클래스 타입 정보
+	}
+
+	@Override
+	public void validate(Object obj, Errors errors) {
+		System.out.println("validate()");
+		Student student = (Student)obj;
+		
+		String studentName = student.getName();
+		if(studentName == null || studentName.trim().isEmpty()) {
+			System.out.println("studentName is null or empty");
+			errors.rejectValue("name", "trouble");
+		}
+		
+		int studentId = student.getId();
+		if(studentId == 0) {
+			System.out.println("studentId is 0");
+			errors.rejectValue("id", "trouble");
+		}
+	}
+
+}
+```
+
+
+StudentController.java
+
+```
+	@RequestMapping("/studentForm")
+	public String studentForm() {
+		return "createPage";
+	}
+	
+	@RequestMapping("/student/create")
+	public String studentCreate(@ModelAttribute("student") Student student, BindingResult result) {
+		
+		String page = "createDonePage";
+		
+		StudentValidator validator = new StudentValidator();
+		validator.validate(student, result);
+		if(result.hasErrors()) {
+			page = "createPage";
+		}
+		return page;
+	}
+```
+
+15-2) - ValidationUtils 클래스
+
+데이터 검증을 위해서 Validator 인터페이스의 validate() 메소드를 사용
+
+ValidationUtils  클래스는 validate()메소드를 좀더 편리하게 사용 할 수 있도록 고안된 클래스 이다.
+
+
+ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "trouble");
+
+
+15-3) - @Valid와 @InitBinder
+
+데이터 검증을 하기 위해서 Validator 인터페이스를 구현한 클래스를 만들고, validate()메소드를 직접 호출하여 사용 한다.
+
+이번에는 직접 호출하지 않고, 스프링 프레임워크에서 호출하는 방법에 대해서 보자
+
+
+poem.xml //의존추가하기
+
+```
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>4.2.0.Final</version>
+		</dependency> 
+```
+
+
+
+StudentController.java
+
+```
+	@RequestMapping("/student/create")
+	public String studentCreate(@ModelAttribute("student") @Valid Student student, BindingResult result) {
+		
+		String page = "createDonePage";
+		
+//		StudentValidator validator = new StudentValidator();
+//		validator.validate(student, result);
+		if(result.hasErrors()) {
+			page = "createPage";
+		}
+		
+		return page;
+	}
+	
+	@InitBinder
+	protected void initBinder(WebDataBinder binder){
+		binder.setValidator(new StudentValidator());
+	}
+```
