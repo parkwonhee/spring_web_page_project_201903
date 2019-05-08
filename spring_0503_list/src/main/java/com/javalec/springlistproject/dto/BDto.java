@@ -78,7 +78,7 @@ public class BDto {
 		return "reply_view";
 	}
 	
-	@RequestMapping("/reply") //답변 하면??
+	@RequestMapping("/reply") //답변 하는것
 	public String reply(HttpServletRequest request,Model model) {
 		System.out.println("reply()");
 		
@@ -89,7 +89,7 @@ public class BDto {
 		return "redirect:list";
 	}
 	
-	@RequestMapping("/delete") //삭제
+	@RequestMapping("/delete") //삭제하기
 	public String delete(HttpServletRequest request,Model model) {
 		System.out.println("delete()");
 		
