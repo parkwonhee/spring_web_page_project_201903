@@ -6,6 +6,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.ui.Model;
 
+import com.javalec.springlistproject.dao.BDao;
+import com.javalec.springlistproject.dto.BDto;
+
 public class BContentCommand implements BCommand {
 
 	@Override
