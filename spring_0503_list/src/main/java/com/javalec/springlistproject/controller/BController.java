@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.javalec.springlistproject.command.BCommand;
 import com.javalec.springlistproject.command.BContentCommand;
+import com.javalec.springlistproject.command.BDeleteCommand;
 import com.javalec.springlistproject.command.BListCommand;
 import com.javalec.springlistproject.command.BModifyCommand;
 import com.javalec.springlistproject.command.BReplyCommand;
@@ -58,12 +59,23 @@ BCommand command;
 		return "content_view";
 	}
 	
-	@RequestMapping(method=RequestMethod.POST,value="/modify") //수정
+	@RequestMapping(method=RequestMethod.POST,value="/modify") //수정하기
 	public String modify(HttpServletRequest request,Model model) {
 		System.out.println("modify()");
 		
 		model.addAttribute("request",request);
 		command = new BModifyCommand();
+		command.execute(model);
+		
+		return "redirect:list";
+	}
+	
+	@RequestMapping("/delete") //삭제하기
+	public String delete(HttpServletRequest request,Model model) {
+		System.out.println("delete()");
+		
+		model.addAttribute("request", request);
+		command = new BDeleteCommand();
 		command.execute(model);
 		
 		return "redirect:list";
@@ -91,15 +103,5 @@ BCommand command;
 		return "redirect:list";
 	}
 	
-	@RequestMapping("/delete") //삭제하기
-	public String delete(HttpServletRequest request,Model model) {
-		System.out.println("delete()");
-		
-		model.addAttribute("request",request);
-		command = new BReplyCommand();
-		command.execute(model);
-		
-		return "redirect:list";
-	}
 	//39
 }
