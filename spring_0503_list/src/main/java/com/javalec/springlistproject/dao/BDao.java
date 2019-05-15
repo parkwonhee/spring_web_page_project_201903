@@ -190,6 +190,69 @@ public class BDao {
 		return dto;
 	}
 	
+	public void reply(String bId, String bName, String bTitle, String bContent, String bGroup, String bStep, String bIndent) {
+		// TODO Auto-generated method stub
+		
+		replyShape(bGroup, bStep);
+		
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		
+		try {
+			connection = dataSource.getConnection();
+			String query = "insert into mvc_board (bId, bName, bTitle, bContent, bGroup, bStep, bIndent) values (mvc_board_seq.nextval, ?, ?, ?, ?, ?, ?)";
+			preparedStatement = connection.prepareStatement(query);
+			
+			preparedStatement.setString(1, bName);
+			preparedStatement.setString(2, bTitle);
+			preparedStatement.setString(3, bContent);
+			preparedStatement.setInt(4, Integer.parseInt(bGroup));
+			preparedStatement.setInt(5, Integer.parseInt(bStep) + 1);
+			preparedStatement.setInt(6, Integer.parseInt(bIndent) + 1);
+			
+			int rn = preparedStatement.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			try {
+				if(preparedStatement != null) preparedStatement.close();
+				if(connection != null) connection.close();
+			} catch (Exception e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+			}
+		}
+		
+	}
+	
+	private void replyShape( String strGroup, String strStep) {
+		// TODO Auto-generated method stub
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		
+		try {
+			connection = dataSource.getConnection();
+			String query = "update mvc_board set bStep = bStep + 1 where bGroup = ? and bStep > ?";
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1, Integer.parseInt(strGroup));
+			preparedStatement.setInt(2, Integer.parseInt(strStep));
+			
+			int rn = preparedStatement.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			try {
+				if(preparedStatement != null) preparedStatement.close();
+				if(connection != null) connection.close();
+			} catch (Exception e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+			}
+		}
+	}
+	
 	public void write(String bName,String bTitle,String bContent) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
