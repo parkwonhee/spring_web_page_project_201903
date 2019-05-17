@@ -2,6 +2,8 @@ package com.javalec.springlistproject.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,12 +15,23 @@ import com.javalec.springlistproject.command.BDeleteCommand;
 import com.javalec.springlistproject.command.BListCommand;
 import com.javalec.springlistproject.command.BModifyCommand;
 import com.javalec.springlistproject.command.BReplyCommand;
+import com.javalec.springlistproject.command.BReplyViewCommand;
 import com.javalec.springlistproject.command.BWriteCommand;
+import com.javalec.springlistproject.util.Constant;
 
 @Controller
 public class BController {
 
-BCommand command;
+	BCommand command;
+	
+	//jdbc tamplate
+	private JdbcTemplate template;
+	
+	@Autowired
+	public void setTemplate(JdbcTemplate template) {
+		this.template = template;
+		Constant.template = this.template;
+	}
 	
 	@RequestMapping("/list") //리스트화면
 	public String list(Model model) {
@@ -81,27 +94,28 @@ BCommand command;
 		return "redirect:list";
 	}
 	
-	@RequestMapping("/reply_view") //답변창
-	public String reply_view(HttpServletRequest request,Model model) {
+	@RequestMapping("/reply_view")//답변창
+	public String reply_view(HttpServletRequest request, Model model){
 		System.out.println("reply_view()");
 		
-		model.addAttribute("request",request);
-		command = new BReplyCommand();
+		model.addAttribute("request", request);
+		command = new BReplyViewCommand();
 		command.execute(model);
 		
 		return "reply_view";
 	}
 	
-	@RequestMapping("/reply") //답변 하는것
-	public String reply(HttpServletRequest request,Model model) {
+	@RequestMapping("/reply")//답변하는것
+	public String reply(HttpServletRequest request, Model model) {
 		System.out.println("reply()");
 		
-		model.addAttribute("request",request);
+		model.addAttribute("request", request);		
 		command = new BReplyCommand();
 		command.execute(model);
 		
 		return "redirect:list";
 	}
+
 	
 	//39
 }

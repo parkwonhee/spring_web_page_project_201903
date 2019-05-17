@@ -89,6 +89,13 @@
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
 		</dependency>
+		
+			<!-- jdbc tamplate -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-jdbc</artifactId>
+		    <version>4.1.0.RELEASE</version>
+		</dependency>
 				
 		<!-- Servlet -->
 		<dependency>
