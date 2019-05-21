@@ -38,7 +38,9 @@ public class BController {
 		System.out.println("list()");
 		
 		command = new BListCommand();
+		System.out.println("list()2");
 		command.execute(model);
+		System.out.println("list()3");
 		return "list";
 	}
 	

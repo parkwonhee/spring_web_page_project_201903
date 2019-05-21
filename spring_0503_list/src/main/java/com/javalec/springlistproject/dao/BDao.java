@@ -2,13 +2,9 @@ package com.javalec.springlistproject.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -17,6 +13,7 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 
 import com.javalec.springlistproject.dto.BDto;
+import com.javalec.springlistproject.util.Constant;
 
 public class BDao {
 	DataSource dataSource;
@@ -25,8 +22,7 @@ public class BDao {
 	
 	public BDao() {
 		try {
-			Context context = new InitialContext();
-			dataSource = (DataSource) context.lookup("java:comp/env/jdbc/Oracle11g");
+			this.template = Constant.template;
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -35,10 +31,9 @@ public class BDao {
 	
 	public ArrayList<BDto> list() {
 		
-
+		System.out.println("dao1");
 		String query = "select bId, bName, bTitle, bContent, bDate, bHit, bGroup, bStep, bIndent from mvc_board order by bGroup desc, bStep asc";
-		return (ArrayList<BDto>) template.query(query, new BeanPropertyRowMapper<BDto>(BDto.class));
-		
+		return (ArrayList<BDto>) template.query(query, new BeanPropertyRowMapper<BDto>(BDto.class));		
 	}
 
 	
@@ -59,7 +54,7 @@ public class BDao {
 		// TODO Auto-generated method stub
 		
 		String query = "update mvc_board set bHit = bHit + 1 where bId = ?";
-		this.template.update(query, new PreparedStatementSetter() {
+		template.update(query, new PreparedStatementSetter() {
 			
 			@Override
 			public void setValues(PreparedStatement ps) throws SQLException {
