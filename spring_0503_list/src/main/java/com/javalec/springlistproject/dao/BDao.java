@@ -21,12 +21,7 @@ public class BDao {
 	JdbcTemplate template;
 	
 	public BDao() {
-		try {
-			this.template = Constant.template;
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
+		this.template = Constant.template;
 	}
 	
 	public ArrayList<BDto> list() {

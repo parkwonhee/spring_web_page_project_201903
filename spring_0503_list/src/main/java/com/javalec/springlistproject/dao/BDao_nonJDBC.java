@@ -14,7 +14,7 @@ import com.javalec.springlistproject.dto.BDto;
 
 public class BDao_nonJDBC {
 
-/*	DataSource dataSource;
+	DataSource dataSource;
 	
 	public BDao_nonJDBC() {
 		try {
@@ -330,7 +330,7 @@ public class BDao_nonJDBC {
 			}
 		}
 	}
-	*/
+	
 	
 }	
 
