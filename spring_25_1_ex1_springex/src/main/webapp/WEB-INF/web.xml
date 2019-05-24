@@ -44,6 +44,7 @@
 		<url-pattern>*.html</url-pattern>
 	</servlet-mapping>
 	
+	<!--  post에 관한 한글처리 -->
 	<filter>
 		<filter-name>encodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
